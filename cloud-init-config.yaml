@@ -1,0 +1,28 @@
+#cloud-config
+growpart:
+  mode: auto
+  devices: ['/']
+  ignore_growroot_disabled: false
+
+# Configuração do resize_rootfs
+resize_rootfs: true
+
+# Configurações do sistema
+system_info:
+  default_user:
+    name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+
+# Pacotes necessários
+packages:
+  - cloud-init
+  - cloud-utils
+  - cloud-guest-utils
+  - gdisk
+  - parted
+
+# Comandos a serem executados na primeira inicialização
+runcmd:
+  - [ cloud-init, single, --name, growpart, --frequency, once-per-instance ]
+  - [ cloud-init, single, --name, resizefs, --frequency, once-per-instance ]
